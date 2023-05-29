@@ -10,7 +10,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddSingleton<ICarCosmosService>(options =>
+builder.Services.AddSingleton<INoteCosmosService>(options =>
 {
     string url = builder.Configuration.GetSection("AzureCosmosDbSettings")
     .GetValue<string>("URL");
@@ -19,12 +19,80 @@ builder.Services.AddSingleton<ICarCosmosService>(options =>
     string dbName = builder.Configuration.GetSection("AzureCosmosDbSettings")
     .GetValue<string>("DatabaseName");
     string containerName = builder.Configuration.GetSection("AzureCosmosDbSettings")
-    .GetValue<string>("ContainerName");
+    .GetValue<string>("ContainerNote");
     var cosmosClient = new CosmosClient(
         url,
         primaryKey
     );
-    return new CarCosmosService(cosmosClient, dbName, containerName);
+    return new NoteCosmosService(cosmosClient, dbName, containerName);
+});
+
+builder.Services.AddSingleton<IPatientCosmosService>(options =>
+{
+    string url = builder.Configuration.GetSection("AzureCosmosDbSettings")
+    .GetValue<string>("URL");
+    string primaryKey = builder.Configuration.GetSection("AzureCosmosDbSettings")
+    .GetValue<string>("PrimaryKey");
+    string dbName = builder.Configuration.GetSection("AzureCosmosDbSettings")
+    .GetValue<string>("DatabaseName");
+    string containerName = builder.Configuration.GetSection("AzureCosmosDbSettings")
+    .GetValue<string>("ContainerPatient");
+    var cosmosClient = new CosmosClient(
+        url,
+        primaryKey
+    );
+    return new PatientCosmosService(cosmosClient, dbName, containerName);
+});
+
+builder.Services.AddSingleton<IMedicalConditionCosmosService>(options =>
+{
+    string url = builder.Configuration.GetSection("AzureCosmosDbSettings")
+    .GetValue<string>("URL");
+    string primaryKey = builder.Configuration.GetSection("AzureCosmosDbSettings")
+    .GetValue<string>("PrimaryKey");
+    string dbName = builder.Configuration.GetSection("AzureCosmosDbSettings")
+    .GetValue<string>("DatabaseName");
+    string containerName = builder.Configuration.GetSection("AzureCosmosDbSettings")
+    .GetValue<string>("ContainerMedicalCondition");
+    var cosmosClient = new CosmosClient(
+        url,
+        primaryKey
+    );
+    return new MedicalConditionCosmosService(cosmosClient, dbName, containerName);
+});
+
+builder.Services.AddSingleton<ITelephoneCosmosService>(options =>
+{
+    string url = builder.Configuration.GetSection("AzureCosmosDbSettings")
+    .GetValue<string>("URL");
+    string primaryKey = builder.Configuration.GetSection("AzureCosmosDbSettings")
+    .GetValue<string>("PrimaryKey");
+    string dbName = builder.Configuration.GetSection("AzureCosmosDbSettings")
+    .GetValue<string>("DatabaseName");
+    string containerName = builder.Configuration.GetSection("AzureCosmosDbSettings")
+    .GetValue<string>("ContainerTelephone");
+    var cosmosClient = new CosmosClient(
+        url,
+        primaryKey
+    );
+    return new TelephoneCosmosService(cosmosClient, dbName, containerName);
+});
+
+builder.Services.AddSingleton<IAddressCosmosService>(options =>
+{
+    string url = builder.Configuration.GetSection("AzureCosmosDbSettings")
+    .GetValue<string>("URL");
+    string primaryKey = builder.Configuration.GetSection("AzureCosmosDbSettings")
+    .GetValue<string>("PrimaryKey");
+    string dbName = builder.Configuration.GetSection("AzureCosmosDbSettings")
+    .GetValue<string>("DatabaseName");
+    string containerName = builder.Configuration.GetSection("AzureCosmosDbSettings")
+    .GetValue<string>("ContainerAddress");
+    var cosmosClient = new CosmosClient(
+        url,
+        primaryKey
+    );
+    return new AddressCosmosService(cosmosClient, dbName, containerName);
 });
 
 var app = builder.Build();

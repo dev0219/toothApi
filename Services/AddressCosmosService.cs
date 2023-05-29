@@ -10,7 +10,7 @@ public class AddressCosmosService : IAddressCosmosService
     string databaseName,
     string containerName)
     {
-        _container = cosmosClient.GetContainer(databaseName, "address");
+        _container = cosmosClient.GetContainer(databaseName, containerName);
     }
 
     public async Task<List<Address>> Get(string sqlCosmosQuery)
@@ -29,13 +29,13 @@ public class AddressCosmosService : IAddressCosmosService
 
     public async Task<Address> AddAsync(Address newAddress)
     {
-        var item = await _container.CreateItemAsync<Address>(newAddress, new PartitionKey(newAddress.customerId));
+        var item = await _container.CreateItemAsync<Address>(newAddress, new PartitionKey(newAddress.CustomerId));
         return item;
     }
 
     public async Task<Address> Update(Address addressToUpdate)
     {
-        var item = await _container.UpsertItemAsync<Address>(addressToUpdate, new PartitionKey(addressToUpdate.customerId));
+        var item = await _container.UpsertItemAsync<Address>(addressToUpdate, new PartitionKey(addressToUpdate.CustomerId));
         return item;
     }
 

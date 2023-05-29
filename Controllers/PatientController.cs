@@ -6,41 +6,41 @@ namespace Dot6.API.CosmosDB.Demo.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class CarController : ControllerBase
+public class PatientsController : ControllerBase
 {
-    public readonly ICarCosmosService _carCosmosService;
-    public CarController(ICarCosmosService carCosmosService)
+    public readonly IPatientCosmosService _patientsCosmosService;
+    public PatientsController(IPatientCosmosService patientsCosmosService)
     {
-        _carCosmosService = carCosmosService;
+        _patientsCosmosService = patientsCosmosService;
     }
 
     [HttpGet]
     public async Task<IActionResult> Get()
     {
         var sqlCosmosQuery = "Select * from c";
-        var result = await _carCosmosService.Get(sqlCosmosQuery);
+        var result = await _patientsCosmosService.Get(sqlCosmosQuery);
         return Ok(result);
     }
 
     [HttpPost]
-    public async Task<IActionResult> Post(Car newCar)
+    public async Task<IActionResult> Post(Patients newPatient)
     {
-        newCar.Id = Guid.NewGuid().ToString();
-        var result = await _carCosmosService.AddAsync(newCar);
+        newPatient.Id = Guid.NewGuid().ToString();
+        var result = await _patientsCosmosService.AddAsync(newPatient);
         return Ok(result);
     }
 
     [HttpPut]
-    public async Task<IActionResult> Put(Car carToUpdate)
+    public async Task<IActionResult> Put(Patients patientToUpdate)
     {
-        var result = await _carCosmosService.Update(carToUpdate);
+        var result = await _patientsCosmosService.Update(patientToUpdate);
         return Ok(result);
     }
 
     [HttpDelete]
-    public async Task<IActionResult> Delete(string id, string make)
+    public async Task<IActionResult> Delete(string id, string customerId)
     {
-        await _carCosmosService.Delete(id, make);
+        await _patientsCosmosService.Delete(id, customerId);
         return Ok();
     }
 

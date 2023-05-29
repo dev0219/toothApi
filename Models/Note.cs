@@ -20,7 +20,7 @@ public class Note
     public string CustomerId { get; set; }
     [JsonProperty("userCreated")]
     public string UserCreated { get; set; }
-    [JsonProperty("creatOnUtc")]
+    [JsonProperty("createdOnUtc")]
     public string CreatedUtc { get; set; }
     [JsonProperty("userModified")]
     public string UserModified { get; set; }

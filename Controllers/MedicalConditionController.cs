@@ -6,41 +6,41 @@ namespace Dot6.API.CosmosDB.Demo.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class CarController : ControllerBase
+public class MedicalConditionController : ControllerBase
 {
-    public readonly ICarCosmosService _carCosmosService;
-    public CarController(ICarCosmosService carCosmosService)
+    public readonly IMedicalConditionCosmosService _medicalConditionCosmosService;
+    public MedicalConditionController(IMedicalConditionCosmosService medicalConditionCosmosService)
     {
-        _carCosmosService = carCosmosService;
+        _medicalConditionCosmosService = medicalConditionCosmosService;
     }
 
     [HttpGet]
     public async Task<IActionResult> Get()
     {
         var sqlCosmosQuery = "Select * from c";
-        var result = await _carCosmosService.Get(sqlCosmosQuery);
+        var result = await _medicalConditionCosmosService.Get(sqlCosmosQuery);
         return Ok(result);
     }
 
     [HttpPost]
-    public async Task<IActionResult> Post(Car newCar)
+    public async Task<IActionResult> Post(MedicalCondition newMedicalCondition)
     {
-        newCar.Id = Guid.NewGuid().ToString();
-        var result = await _carCosmosService.AddAsync(newCar);
+        newMedicalCondition.Id = Guid.NewGuid().ToString();
+        var result = await _medicalConditionCosmosService.AddAsync(newMedicalCondition);
         return Ok(result);
     }
 
     [HttpPut]
-    public async Task<IActionResult> Put(Car carToUpdate)
+    public async Task<IActionResult> Put(MedicalCondition medicalConditionToUpdate)
     {
-        var result = await _carCosmosService.Update(carToUpdate);
+        var result = await _medicalConditionCosmosService.Update(medicalConditionToUpdate);
         return Ok(result);
     }
 
     [HttpDelete]
-    public async Task<IActionResult> Delete(string id, string make)
+    public async Task<IActionResult> Delete(string id, string customerId)
     {
-        await _carCosmosService.Delete(id, make);
+        await _medicalConditionCosmosService.Delete(id, customerId);
         return Ok();
     }
 

@@ -2,7 +2,7 @@ using Newtonsoft.Json;
 
 namespace Dot6.API.CosmosDB.Demo.Models;
 
-public class Telephone
+public class MedicalCondition
 {
     [JsonProperty("id")]
     public string Id { get; set; }
