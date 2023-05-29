@@ -11,3 +11,4 @@ public class Car
     [JsonProperty("model")]
     public string Model { get; set; }
 }
+
