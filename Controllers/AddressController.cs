@@ -14,7 +14,7 @@ public class AddressController : ControllerBase
         _addressCosmosService = addressCosmosService;
     }
 
-    [HttpGet]
+    [HttpGet("All")]
     public async Task<IActionResult> Get()
     {
         var sqlCosmosQuery = "Select * from c";
@@ -22,22 +22,25 @@ public class AddressController : ControllerBase
         return Ok(result);
     }
 
-    [HttpPost]
+    [HttpPost("Create")]
     public async Task<IActionResult> Post(Address newAddress)
     {
         newAddress.Id = Guid.NewGuid().ToString();
+        newAddress.CreatedUtc = DateTime.UtcNow.ToString("o");
+        newAddress.ModifiedOnUtc = DateTime.UtcNow.ToString("o");
         var result = await _addressCosmosService.AddAsync(newAddress);
         return Ok(result);
     }
 
-    [HttpPut]
+    [HttpPut("Update")]
     public async Task<IActionResult> Put(Address addressToUpdate)
     {
+        addressToUpdate.ModifiedOnUtc = DateTime.UtcNow.ToString("o");
         var result = await _addressCosmosService.Update(addressToUpdate);
         return Ok(result);
     }
 
-    [HttpDelete]
+    [HttpDelete("Delete")]
     public async Task<IActionResult> Delete(string id, string customerId)
     {
         await _addressCosmosService.Delete(id, customerId);

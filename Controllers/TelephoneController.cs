@@ -14,7 +14,7 @@ public class TelephoneController : ControllerBase
         _telephoneCosmosService = telephoneCosmosService;
     }
 
-    [HttpGet]
+    [HttpGet("All")]
     public async Task<IActionResult> Get()
     {
         var sqlCosmosQuery = "Select * from c";
@@ -22,22 +22,25 @@ public class TelephoneController : ControllerBase
         return Ok(result);
     }
 
-    [HttpPost]
+    [HttpPost("Create")]
     public async Task<IActionResult> Post(Telephone newTelephone)
     {
         newTelephone.Id = Guid.NewGuid().ToString();
+        newTelephone.CreatedUtc = DateTime.UtcNow.ToString("o");
+        newTelephone.ModifiedOnUtc = DateTime.UtcNow.ToString("o");
         var result = await _telephoneCosmosService.AddAsync(newTelephone);
         return Ok(result);
     }
 
-    [HttpPut]
+    [HttpPut("Update")]
     public async Task<IActionResult> Put(Telephone telephoneToUpdate)
     {
+        telephoneToUpdate.ModifiedOnUtc = DateTime.UtcNow.ToString("o");
         var result = await _telephoneCosmosService.Update(telephoneToUpdate);
         return Ok(result);
     }
 
-    [HttpDelete]
+    [HttpDelete("Delete")]
     public async Task<IActionResult> Delete(string id, string customerId)
     {
         await _telephoneCosmosService.Delete(id, customerId);

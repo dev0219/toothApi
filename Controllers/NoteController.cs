@@ -14,7 +14,7 @@ public class NoteController : ControllerBase
         _noteCosmosService = noteCosmosService;
     }
 
-    [HttpGet]
+    [HttpGet("All")]
     public async Task<IActionResult> Get()
     {
         var sqlCosmosQuery = "Select * from c";
@@ -22,22 +22,25 @@ public class NoteController : ControllerBase
         return Ok(result);
     }
 
-    [HttpPost]
+    [HttpPost("Create")]
     public async Task<IActionResult> Post(Note newNote)
     {
         newNote.Id = Guid.NewGuid().ToString();
+        newNote.CreatedUtc = DateTime.UtcNow.ToString("o");
+        newNote.ModifiedOnUtc = DateTime.UtcNow.ToString("o");
         var result = await _noteCosmosService.AddAsync(newNote);
         return Ok(result);
     }
 
-    [HttpPut]
+    [HttpPut("Update")]
     public async Task<IActionResult> Put(Note noteToUpdate)
     {
+        noteToUpdate.ModifiedOnUtc = DateTime.UtcNow.ToString("o");
         var result = await _noteCosmosService.Update(noteToUpdate);
         return Ok(result);
     }
 
-    [HttpDelete]
+    [HttpDelete("Delete")]
     public async Task<IActionResult> Delete(string id, string customerId)
     {
         await _noteCosmosService.Delete(id, customerId);

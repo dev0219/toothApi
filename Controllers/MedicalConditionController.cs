@@ -14,7 +14,7 @@ public class MedicalConditionController : ControllerBase
         _medicalConditionCosmosService = medicalConditionCosmosService;
     }
 
-    [HttpGet]
+    [HttpGet("All")]
     public async Task<IActionResult> Get()
     {
         var sqlCosmosQuery = "Select * from c";
@@ -22,22 +22,25 @@ public class MedicalConditionController : ControllerBase
         return Ok(result);
     }
 
-    [HttpPost]
+    [HttpPost("Create")]
     public async Task<IActionResult> Post(MedicalCondition newMedicalCondition)
     {
         newMedicalCondition.Id = Guid.NewGuid().ToString();
+        newMedicalCondition.CreatedUtc = DateTime.UtcNow.ToString("o");
+        newMedicalCondition.ModifiedOnUtc = DateTime.UtcNow.ToString("o");
         var result = await _medicalConditionCosmosService.AddAsync(newMedicalCondition);
         return Ok(result);
     }
 
-    [HttpPut]
+    [HttpPut("Update")]
     public async Task<IActionResult> Put(MedicalCondition medicalConditionToUpdate)
     {
+        medicalConditionToUpdate.ModifiedOnUtc = DateTime.UtcNow.ToString("o");
         var result = await _medicalConditionCosmosService.Update(medicalConditionToUpdate);
         return Ok(result);
     }
 
-    [HttpDelete]
+    [HttpDelete("Delete")]
     public async Task<IActionResult> Delete(string id, string customerId)
     {
         await _medicalConditionCosmosService.Delete(id, customerId);

@@ -27,6 +27,24 @@ public class TelephoneCosmosService : ITelephoneCosmosService
         return result;
     }
 
+    public async Task<List<Telephone>> SearchByPhone(string sqlCosmosQuery, string Phone)
+    {
+        List<Telephone> result = new List<Telephone>();
+
+        QueryDefinition queryDefinition = new QueryDefinition(sqlCosmosQuery)
+            .WithParameter("@Phone", Phone);
+
+        FeedIterator<Telephone> feedIterator = _container.GetItemQueryIterator<Telephone>(queryDefinition);
+
+        while (feedIterator.HasMoreResults)
+        {
+            FeedResponse<Telephone> response = await feedIterator.ReadNextAsync();
+            result.AddRange(response.ToList());
+        }
+
+        return result;
+    }
+
     public async Task<Telephone> AddAsync(Telephone newTelephone)
     {
         var item = await _container.CreateItemAsync<Telephone>(newTelephone, new PartitionKey(newTelephone.CustomerId));

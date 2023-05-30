@@ -27,6 +27,42 @@ public class PatientCosmosService : IPatientCosmosService
         return result;
     }
 
+    public async Task<List<Patients>> SearchByName(string sqlCosmosQuery, string name)
+    {
+        List<Patients> result = new List<Patients>();
+
+        QueryDefinition queryDefinition = new QueryDefinition(sqlCosmosQuery)
+            .WithParameter("@name", name);
+
+        FeedIterator<Patients> feedIterator = _container.GetItemQueryIterator<Patients>(queryDefinition);
+
+        while (feedIterator.HasMoreResults)
+        {
+            FeedResponse<Patients> response = await feedIterator.ReadNextAsync();
+            result.AddRange(response.ToList());
+        }
+
+        return result;
+    }
+
+    public async Task<List<Patients>> SearchById(string sqlCosmosQuery, string Id)
+    {
+        List<Patients> result = new List<Patients>();
+
+        QueryDefinition queryDefinition = new QueryDefinition(sqlCosmosQuery)
+            .WithParameter("@Id", Id);
+
+        FeedIterator<Patients> feedIterator = _container.GetItemQueryIterator<Patients>(queryDefinition);
+
+        while (feedIterator.HasMoreResults)
+        {
+            FeedResponse<Patients> response = await feedIterator.ReadNextAsync();
+            result.AddRange(response.ToList());
+        }
+
+        return result;
+    }
+
     public async Task<Patients> AddAsync(Patients newPatient)
     {
         var item = await _container.CreateItemAsync<Patients>(newPatient, new PartitionKey(newPatient.CustomerId));
