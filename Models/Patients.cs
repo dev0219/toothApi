@@ -1,6 +1,6 @@
 using Newtonsoft.Json;
 
-namespace Dot6.API.CosmosDB.Demo.Models;
+namespace toothApi.Models;
 
 public class Patients
 {

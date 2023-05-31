@@ -9,7 +9,7 @@
     }
   },
   "profiles": {
-    "Dot6.API.CosmosDB.Demo": {
+    "toothApi": {
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": true,

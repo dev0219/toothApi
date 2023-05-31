@@ -1,4 +1,4 @@
-using Dot6.API.CosmosDB.Demo.Services;
+using toothApi.Services;
 using Microsoft.Azure.Cosmos;
 
 var builder = WebApplication.CreateBuilder(args);

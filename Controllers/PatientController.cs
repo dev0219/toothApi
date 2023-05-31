@@ -1,8 +1,8 @@
-using Dot6.API.CosmosDB.Demo.Models;
-using Dot6.API.CosmosDB.Demo.Services;
+using toothApi.Models;
+using toothApi.Services;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Dot6.API.CosmosDB.Demo.Controllers;
+namespace toothApi.Controllers;
 
 [ApiController]
 [Route("[controller]")]
@@ -37,6 +37,22 @@ public class PatientsController : ControllerBase
     {
         var sqlCosmosQuery = "SELECT * FROM c WHERE c.documentId = @Id OR c.siteId = @Id";
         var result = await _patientsCosmosService.SearchById(sqlCosmosQuery, Id);
+        return Ok(result);
+    }
+
+    [HttpGet("getPatient")]
+    public async Task<IActionResult> GetById(string Id)
+    {
+        var sqlCosmosQuery = "SELECT * FROM c WHERE c.id = @Id";
+        var result = await _patientsCosmosService.SearchById(sqlCosmosQuery, Id);
+        return Ok(result);
+    }
+
+    [HttpGet("recentPatients")]
+    public async Task<IActionResult> RecentPatients()
+    {
+        var sqlCosmosQuery = "SELECT TOP 5 * FROM c ORDER BY c.creatOnUtc DESC";
+        var result = await _patientsCosmosService.RecentPatients(sqlCosmosQuery);
         return Ok(result);
     }
 

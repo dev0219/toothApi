@@ -1,8 +1,8 @@
-using Dot6.API.CosmosDB.Demo.Models;
-using Dot6.API.CosmosDB.Demo.Services;
+using toothApi.Models;
+using toothApi.Services;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Dot6.API.CosmosDB.Demo.Controllers;
+namespace toothApi.Controllers;
 
 [ApiController]
 [Route("[controller]")]
@@ -29,6 +29,14 @@ public class AddressController : ControllerBase
         newAddress.CreatedUtc = DateTime.UtcNow.ToString("o");
         newAddress.ModifiedOnUtc = DateTime.UtcNow.ToString("o");
         var result = await _addressCosmosService.AddAsync(newAddress);
+        return Ok(result);
+    }
+
+    [HttpGet("getAddress")]
+    public async Task<IActionResult> GetById(string Id)
+    {
+        var sqlCosmosQuery = "SELECT * FROM c WHERE c.id = @Id";
+        var result = await _addressCosmosService.SearchById(sqlCosmosQuery, Id);
         return Ok(result);
     }
 

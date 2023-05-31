@@ -1,7 +1,7 @@
-using Dot6.API.CosmosDB.Demo.Models;
+using toothApi.Models;
 using Microsoft.Azure.Cosmos;
 
-namespace Dot6.API.CosmosDB.Demo.Services;
+namespace toothApi.Services;
 
 public class AddressCosmosService : IAddressCosmosService
 {
@@ -22,6 +22,24 @@ public class AddressCosmosService : IAddressCosmosService
         {
             var response = await query.ReadNextAsync();
             result.AddRange(response);
+        }
+
+        return result;
+    }
+
+    public async Task<List<Address>> SearchById(string sqlCosmosQuery, string Id)
+    {
+        List<Address> result = new List<Address>();
+
+        QueryDefinition queryDefinition = new QueryDefinition(sqlCosmosQuery)
+            .WithParameter("@Id", Id);
+
+        FeedIterator<Address> feedIterator = _container.GetItemQueryIterator<Address>(queryDefinition);
+
+        while (feedIterator.HasMoreResults)
+        {
+            FeedResponse<Address> response = await feedIterator.ReadNextAsync();
+            result.AddRange(response.ToList());
         }
 
         return result;

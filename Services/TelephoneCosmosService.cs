@@ -1,7 +1,7 @@
-using Dot6.API.CosmosDB.Demo.Models;
+using toothApi.Models;
 using Microsoft.Azure.Cosmos;
 
-namespace Dot6.API.CosmosDB.Demo.Services;
+namespace toothApi.Services;
 
 public class TelephoneCosmosService : ITelephoneCosmosService
 {
@@ -33,6 +33,24 @@ public class TelephoneCosmosService : ITelephoneCosmosService
 
         QueryDefinition queryDefinition = new QueryDefinition(sqlCosmosQuery)
             .WithParameter("@Phone", Phone);
+
+        FeedIterator<Telephone> feedIterator = _container.GetItemQueryIterator<Telephone>(queryDefinition);
+
+        while (feedIterator.HasMoreResults)
+        {
+            FeedResponse<Telephone> response = await feedIterator.ReadNextAsync();
+            result.AddRange(response.ToList());
+        }
+
+        return result;
+    }
+
+    public async Task<List<Telephone>> SearchById(string sqlCosmosQuery, string Id)
+    {
+        List<Telephone> result = new List<Telephone>();
+
+        QueryDefinition queryDefinition = new QueryDefinition(sqlCosmosQuery)
+            .WithParameter("@Id", Id);
 
         FeedIterator<Telephone> feedIterator = _container.GetItemQueryIterator<Telephone>(queryDefinition);
 

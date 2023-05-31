@@ -1,8 +1,8 @@
-using Dot6.API.CosmosDB.Demo.Models;
-using Dot6.API.CosmosDB.Demo.Services;
+using toothApi.Models;
+using toothApi.Services;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Dot6.API.CosmosDB.Demo.Controllers;
+namespace toothApi.Controllers;
 
 [ApiController]
 [Route("[controller]")]
@@ -29,6 +29,14 @@ public class MedicalConditionController : ControllerBase
         newMedicalCondition.CreatedUtc = DateTime.UtcNow.ToString("o");
         newMedicalCondition.ModifiedOnUtc = DateTime.UtcNow.ToString("o");
         var result = await _medicalConditionCosmosService.AddAsync(newMedicalCondition);
+        return Ok(result);
+    }
+
+    [HttpGet("getMedicalCondition")]
+    public async Task<IActionResult> GetById(string Id)
+    {
+        var sqlCosmosQuery = "SELECT * FROM c WHERE c.id = @Id";
+        var result = await _medicalConditionCosmosService.SearchById(sqlCosmosQuery, Id);
         return Ok(result);
     }
 

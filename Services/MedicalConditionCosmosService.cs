@@ -1,7 +1,7 @@
-using Dot6.API.CosmosDB.Demo.Models;
+using toothApi.Models;
 using Microsoft.Azure.Cosmos;
 
-namespace Dot6.API.CosmosDB.Demo.Services;
+namespace toothApi.Services;
 
 public class MedicalConditionCosmosService : IMedicalConditionCosmosService
 {
@@ -22,6 +22,24 @@ public class MedicalConditionCosmosService : IMedicalConditionCosmosService
         {
             var response = await query.ReadNextAsync();
             result.AddRange(response);
+        }
+
+        return result;
+    }
+
+    public async Task<List<MedicalCondition>> SearchById(string sqlCosmosQuery, string Id)
+    {
+        List<MedicalCondition> result = new List<MedicalCondition>();
+
+        QueryDefinition queryDefinition = new QueryDefinition(sqlCosmosQuery)
+            .WithParameter("@Id", Id);
+
+        FeedIterator<MedicalCondition> feedIterator = _container.GetItemQueryIterator<MedicalCondition>(queryDefinition);
+
+        while (feedIterator.HasMoreResults)
+        {
+            FeedResponse<MedicalCondition> response = await feedIterator.ReadNextAsync();
+            result.AddRange(response.ToList());
         }
 
         return result;

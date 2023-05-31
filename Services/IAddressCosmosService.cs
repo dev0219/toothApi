@@ -1,10 +1,11 @@
-using Dot6.API.CosmosDB.Demo.Models;
+using toothApi.Models;
 
-namespace Dot6.API.CosmosDB.Demo.Services;
+namespace toothApi.Services;
 
 public interface IAddressCosmosService
 {
     Task<List<Address>> Get(string sqlCosmosQuery);
+    Task<List<Address>> SearchById(string sqlCosmosQuery, string Id);
     Task<Address> AddAsync(Address newaddress);
     Task<Address> Update(Address addressToUpdate);
     Task Delete(string id, string customerId);

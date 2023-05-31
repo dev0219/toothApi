@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.6.33712.159
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dot6.API.CosmosDB.Demo", "Dot6.API.CosmosDB.Demo.csproj", "{15799BAC-E52B-4F7B-BA85-3FB38A0C0678}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "toothApi", "toothApi.csproj", "{15799BAC-E52B-4F7B-BA85-3FB38A0C0678}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
